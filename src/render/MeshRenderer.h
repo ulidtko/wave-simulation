@@ -3,7 +3,7 @@
 
 #include <tr1/memory>
 
-#include "../GridData.h"
+#include "GridData.h"
 
 using std::tr1::shared_ptr;
 
