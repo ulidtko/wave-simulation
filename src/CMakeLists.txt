@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wall")
 add_library(testcrap STATIC
     Simulation.cpp
     GridData.cpp
-    render/MeshRenderer.cpp
+    rendering/MeshRenderer.cpp
 )
 
 include(${QT_USE_FILE})
