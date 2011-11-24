@@ -5,6 +5,8 @@
 
 #include "GridData.h"
 
+using std::tie;
+
 void MeshRenderer::render(const GridData& grid) {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -16,9 +18,9 @@ void MeshRenderer::render(const GridData& grid) {
     for(size_t i = 0; i < grid_shape[0]; ++i) {
         glBegin(GL_LINE_STRIP);
         for(size_t j = 0; j < grid_shape[1]; ++j) {
-            auto const& displacement = grid.data[i][j];
-            std::array<double,2> position = {{1.0 * i, 1.0 * j}};
-            glVertex2d(position[0] + displacement[0], position[1] + displacement[1]);
+            double x, y;
+            tie(x, y) = grid.getNodePosition(i, j);
+            glVertex2d(x, y);
         }
         glEnd();
     }
@@ -26,9 +28,9 @@ void MeshRenderer::render(const GridData& grid) {
     for(size_t j = 0; j < grid_shape[1]; ++j) {
         glBegin(GL_LINE_STRIP);
         for(size_t i = 0; i < grid_shape[0]; ++i) {
-            auto const& displacement = grid.data[i][j];
-            std::array<double,2> position = {{1.0 * i, 1.0 * j}};
-            glVertex2d(position[0] + displacement[0], position[1] + displacement[1]);
+            double x, y;
+            tie(x, y) = grid.getNodePosition(i, j);
+            glVertex2d(x, y);
         }
         glEnd();
     }

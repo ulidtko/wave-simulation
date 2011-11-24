@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include <QTimer>
+#include <memory>
+
+#include "GridData.h"
+#include "Simulation.h"
 
 namespace Ui {
     class MainWindow;
@@ -17,6 +22,14 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    std::shared_ptr<GridData> grid;
+    std::shared_ptr<Simulation> simulation;
+
+    QTimer timer;
+
+private slots:
+    void onTimer();
 };
 
 #endif // MAINWINDOW_H

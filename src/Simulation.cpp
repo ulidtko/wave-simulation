@@ -4,8 +4,8 @@
 #include <boost/multi_array.hpp>
 
 
-Simulation::Simulation(std::unique_ptr<GridData> grid, float time_step, float c)
-    : grid(std::move(grid))
+Simulation::Simulation(std::shared_ptr<GridData> grid, float time_step, float c)
+    : grid(grid)
     , time_step(time_step)
     , c(c)
 {
