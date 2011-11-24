@@ -15,4 +15,7 @@ add_executable(qtgui
     ${qtgui_FORMS}
 )
 
-target_link_libraries(qtgui ${QT_LIBRARIES})
+target_link_libraries(qtgui
+    core
+    ${QT_LIBRARIES}
+)
