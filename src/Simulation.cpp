@@ -63,9 +63,10 @@ void Simulation::advanceOneTick()
         }
     }
 
+    grid->data = next_grid;
+
     history.push_front(*grid);
     history.pop_back();
 
-    grid->data = next_grid;
     ++tick_counter;
 }
