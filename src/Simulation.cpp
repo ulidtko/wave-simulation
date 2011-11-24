@@ -54,10 +54,10 @@ void Simulation::advanceOneTick()
         for(size_t j = 0; j < grid_shape[1]; ++j) {
             for(size_t k = 0; k < grid_shape[2]; ++k)
             {
-                next_grid[i][j][k] = 0.5 * ( -(time_step/c)*(time_step/c) * spatial_laplacian[i][j][k]
-                                             - 5 * history[0].data[i][j][k]
-                                             + 4 * history[1].data[i][j][k]
-                                             -     history[2].data[i][j][k]
+                next_grid[i][j][k] = 0.5 * ( +(time_step/c)*(time_step/c) * spatial_laplacian[i][j][k]
+                                             + 5 * history[0].data[i][j][k]
+                                             - 4 * history[1].data[i][j][k]
+                                             + 1 * history[2].data[i][j][k]
                                             );
             }
         }
