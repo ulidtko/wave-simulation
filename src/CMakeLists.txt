@@ -1,4 +1,8 @@
-include_directories(. ${Boost_INCLUDE_DIRS} ${QT_INCLUDES})
+include_directories(.
+    ${Boost_INCLUDE_DIRS}
+    ${QT_INCLUDES}
+    ${EIGEN3_INCLUDE_DIR}
+)
 
 set(CMAKE_CXX_FLAGS "-std=c++0x -Wall")
 
