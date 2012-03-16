@@ -3,6 +3,23 @@
 #include <boost/array.hpp>
 #include <boost/multi_array.hpp>
 
+#include <cstdio>
+#include <cmath>
+
+auto static i_all = boost::multi_array_types::index_range(); // "all" index range
+
+
+template<class M>
+void printFloatMatrix(const M& matrix) {
+    using std::printf;
+    for(const auto& row : matrix) {
+        for(const auto& elem : row) {
+            printf("%5.3f ", elem);
+        }
+        printf("\n");
+    }
+}
+
 
 Simulation::Simulation(std::shared_ptr<GridData> grid, float time_step, float c)
     : grid(grid)
@@ -38,14 +55,40 @@ void Simulation::advanceOneTick()
         for(size_t j = 0; j < grid_shape[1]; ++j) {
             for(size_t k = 0; k < grid_shape[2]; ++k)
             {
+#if 1
                 spatial_laplacian[i][j][k] = ((i > 0) ? grid->data[i-1][j][k] : 0)
                                            + ((j > 0) ? grid->data[i][j-1][k] : 0)
                                            + ((i+1 < grid_shape[0]) ? grid->data[i+1][j][k] : 0)
                                            + ((j+1 < grid_shape[1]) ? grid->data[i][j+1][k] : 0)
                                            - 4 * grid->data[i][j][k];
+#else
+                spatial_laplacian[i][j][k] = - 1/12.0 * ((i > 1) ? grid->data[i-2][j][k] : 0.0)
+                                             - 1/12.0 * ((j > 1) ? grid->data[i][j-2][k] : 0.0)
+                                             +  4/3.0 * ((i > 0) ? grid->data[i-1][j][k] : 0.0)
+                                             +  4/3.0 * ((j > 0) ? grid->data[i][j-1][k] : 0.0)
+                                             -    5.0 * grid->data[i][j][k]
+                                             +  4/3.0 * ((i+1 < grid_shape[0]) ? grid->data[i+1][j][k] : 0.0)
+                                             +  4/3.0 * ((j+1 < grid_shape[1]) ? grid->data[i][j+1][k] : 0.0)
+                                             - 1/12.0 * ((i+2 < grid_shape[0]) ? grid->data[i+2][j][k] : 0.0)
+                                             - 1/12.0 * ((j+2 < grid_shape[1]) ? grid->data[i][j+2][k] : 0.0);
+#endif
             }
         }
     }
+
+#if 0
+    using boost::indices;
+    printf("displacement field, x:\n");
+    printFloatMatrix(grid->data[ indices [i_all] [i_all] [0] ]);
+    printf("\n");
+#endif
+
+#if 0
+    using boost::indices;
+    printf("spatial laplacian, x:\n");
+    printFloatMatrix(spatial_laplacian[ indices [i_all] [i_all] [0] ]);
+    printf("\n");
+#endif
 
 
     boost::multi_array<double, 3> next_grid(grid_shape);
