@@ -1,0 +1,12 @@
+
+=== Dependencies ===
+Boost, Qt4
+Eigen3 libeigen3-dev
+UmfPack libsuitesparse-dev
+
+=== Build ===
+Standard CMake build
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
