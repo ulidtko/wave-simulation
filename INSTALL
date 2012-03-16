@@ -4,8 +4,11 @@ Boost, Qt4
 Eigen3 libeigen3-dev
 UmfPack libsuitesparse-dev
 
+Also, some features from C++11 are used in the code, so you'll need at least
+partially complying compiler to build it; GCC 4.6.1 worked just fine for me.
+
 === Build ===
-Standard CMake build
+Standard CMake build:
 $ mkdir build
 $ cd build
 $ cmake ..
