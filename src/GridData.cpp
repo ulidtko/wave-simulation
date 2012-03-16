@@ -2,7 +2,7 @@
 
 using std::make_tuple;
 
-GridData::GridData(float width, float height, float grid_step)
+Grid::Grid(float width, float height, float grid_step)
     : width(width)
     , height(height)
     , grid_step(grid_step)
@@ -15,7 +15,7 @@ GridData::GridData(float width, float height, float grid_step)
 }
 
 
-void GridData::fill(double value)
+void Grid::fill(double value)
 {
     for(auto d2 : data)
         for(auto d1 : d2)
@@ -26,12 +26,12 @@ void GridData::fill(double value)
 }
 
 
-tuple<double,double> GridData::getNodeOrigin(int i, int j) const {
+tuple<double,double> Grid::getNodeOrigin(int i, int j) const {
     return make_tuple(i * grid_step, j * grid_step);
 }
 
 
-tuple<double,double> GridData::getNodePosition(int i, int j) const {
+tuple<double,double> Grid::getNodePosition(int i, int j) const {
     return make_tuple(i * grid_step + data[i][j][0],
                       j * grid_step + data[i][j][1]);
 }

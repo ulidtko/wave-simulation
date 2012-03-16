@@ -1,12 +1,12 @@
 #ifndef MESHRENDERER_H
 #define MESHRENDERER_H
 
-class GridData;
+class Grid;
 
 class MeshRenderer
 {
 public:
-    static void render(const GridData& grid);
+    static void render(const Grid& grid);
 };
 
 #endif // MESHRENDERER_H

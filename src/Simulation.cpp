@@ -23,7 +23,7 @@ void printFloatMatrix(const M& matrix) {
     }
 }
 
-Simulation::Simulation(std::shared_ptr<GridData> grid, float time_step, float c)
+Simulation::Simulation(std::shared_ptr<Grid> grid, float time_step, float c)
     : grid(grid)
     , time_step(time_step)
     , c(c)
@@ -72,7 +72,7 @@ void Simulation::advanceOneTick()
 }
 
 
-auto Simulation::solveExplicitStep() -> GridData::data_type {
+auto Simulation::solveExplicitStep() -> Grid::data_type {
     std::array<size_t,3> grid_shape;
     std::copy_n(grid->data.shape(), 3, grid_shape.begin());
 
@@ -109,7 +109,7 @@ auto Simulation::solveExplicitStep() -> GridData::data_type {
     return result; // move semantics!
 }
 
-auto Simulation::solveImplicitStep() -> GridData::data_type {
+auto Simulation::solveImplicitStep() -> Grid::data_type {
     std::array<size_t,3> grid_shape;
     std::copy_n(grid->data.shape(), 3, grid_shape.begin());
 
@@ -170,7 +170,7 @@ auto Simulation::solveImplicitStep() -> GridData::data_type {
     }
 
     // prepare result
-    GridData::data_type result(grid_shape);
+    Grid::data_type result(grid_shape);
     for(int eqn = 0; eqn < N; ++eqn) {
         int i, j;
         std::tie(i, j) = unflatten(eqn);

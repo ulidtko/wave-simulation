@@ -7,7 +7,7 @@
 
 using std::tie;
 
-void MeshRenderer::render(const GridData& grid) {
+void MeshRenderer::render(const Grid& grid) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glColor3ub(255, 255, 255);

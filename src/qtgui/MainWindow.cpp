@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , grid(new GridData(12.0, 8.0, 0.2))
+    , grid(new Grid(12.0, 8.0, 0.2))
     , simulation(new Simulation(grid, 0.3, 10.0))
 {
     ui->setupUi(this);

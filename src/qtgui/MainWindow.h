@@ -23,7 +23,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    std::shared_ptr<GridData> grid;
+    std::shared_ptr<Grid> grid;
     std::shared_ptr<Simulation> simulation;
 
     QTimer timer;

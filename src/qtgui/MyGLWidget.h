@@ -4,7 +4,7 @@
 #include <QGLWidget>
 #include <memory>
 
-class GridData;
+class Grid;
 
 class MyGLWidget : public QGLWidget
 {
@@ -13,7 +13,7 @@ public:
     explicit MyGLWidget(QWidget *parent = 0)
       : QGLWidget(parent) {}
 
-    void setGrid(std::shared_ptr<GridData> arg) { grid = arg; }
+    void setGrid(std::shared_ptr<Grid> arg) { grid = arg; }
 
 protected:
     void initializeGL();
@@ -21,7 +21,7 @@ protected:
     void paintGL();
 
 private:
-    std::shared_ptr<GridData> grid;
+    std::shared_ptr<Grid> grid;
 };
 
 #endif // MYGLWIDGET_H
