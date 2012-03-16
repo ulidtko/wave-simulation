@@ -3,7 +3,6 @@
 #include <Eigen/Dense>
 #include <Eigen/UmfPackSupport>
 
-#include <boost/array.hpp>
 #include <boost/multi_array.hpp>
 
 #include <cstdio>
@@ -48,36 +47,9 @@ void Simulation::reset()
 
 void Simulation::advanceOneTick()
 {
-    boost::array<size_t, 3> grid_shape;
-    std::copy_n(grid->data.shape(), 3, grid_shape.begin());
+    auto next_grid = solveImplicitStep();
 
-
-    boost::multi_array<double, 3> spatial_laplacian(grid_shape);
-
-    for(size_t i = 0; i < grid_shape[0]; ++i) {
-        for(size_t j = 0; j < grid_shape[1]; ++j) {
-            for(size_t k = 0; k < grid_shape[2]; ++k)
-            {
-#if 1
-                spatial_laplacian[i][j][k] = ((i > 0) ? grid->data[i-1][j][k] : 0)
-                                           + ((j > 0) ? grid->data[i][j-1][k] : 0)
-                                           + ((i+1 < grid_shape[0]) ? grid->data[i+1][j][k] : 0)
-                                           + ((j+1 < grid_shape[1]) ? grid->data[i][j+1][k] : 0)
-                                           - 4 * grid->data[i][j][k];
-#else
-                spatial_laplacian[i][j][k] = - 1/12.0 * ((i > 1) ? grid->data[i-2][j][k] : 0.0)
-                                             - 1/12.0 * ((j > 1) ? grid->data[i][j-2][k] : 0.0)
-                                             +  4/3.0 * ((i > 0) ? grid->data[i-1][j][k] : 0.0)
-                                             +  4/3.0 * ((j > 0) ? grid->data[i][j-1][k] : 0.0)
-                                             -    5.0 * grid->data[i][j][k]
-                                             +  4/3.0 * ((i+1 < grid_shape[0]) ? grid->data[i+1][j][k] : 0.0)
-                                             +  4/3.0 * ((j+1 < grid_shape[1]) ? grid->data[i][j+1][k] : 0.0)
-                                             - 1/12.0 * ((i+2 < grid_shape[0]) ? grid->data[i+2][j][k] : 0.0)
-                                             - 1/12.0 * ((j+2 < grid_shape[1]) ? grid->data[i][j+2][k] : 0.0);
-#endif
-            }
-        }
-    }
+    grid->data = next_grid;
 
 #if 0
     using boost::indices;
@@ -93,30 +65,49 @@ void Simulation::advanceOneTick()
     printf("\n");
 #endif
 
-
-    boost::multi_array<double, 3> next_grid(grid_shape);
-
-    for(size_t i = 0; i < grid_shape[0]; ++i) {
-        for(size_t j = 0; j < grid_shape[1]; ++j) {
-            for(size_t k = 0; k < grid_shape[2]; ++k)
-            {
-                next_grid[i][j][k] = 0.5 * ( +(time_step/c)*(time_step/c) * spatial_laplacian[i][j][k]
-                                             + 5 * history[0][i][j][k]
-                                             - 4 * history[1][i][j][k]
-                                             + 1 * history[2][i][j][k]
-                                            );
-            }
-        }
-    }
-
-    grid->data = next_grid;
-
     history.push_front(grid->data);
     history.pop_back();
 
     ++tick_counter;
 }
 
+
+auto Simulation::solveExplicitStep() -> GridData::data_type {
+    std::array<size_t,3> grid_shape;
+    std::copy_n(grid->data.shape(), 3, grid_shape.begin());
+
+    boost::multi_array<double, 3> spatial_laplacian(grid_shape);
+
+    for(size_t i = 0; i < grid_shape[0]; ++i) {
+        for(size_t j = 0; j < grid_shape[1]; ++j) {
+            for(size_t k = 0; k < grid_shape[2]; ++k)
+            {
+                spatial_laplacian[i][j][k] = ((i > 0) ? grid->data[i-1][j][k] : 0)
+                                           + ((j > 0) ? grid->data[i][j-1][k] : 0)
+                                           + ((i+1 < grid_shape[0]) ? grid->data[i+1][j][k] : 0)
+                                           + ((j+1 < grid_shape[1]) ? grid->data[i][j+1][k] : 0)
+                                           - 4 * grid->data[i][j][k];
+            }
+        }
+    }
+
+    boost::multi_array<double, 3> result(grid_shape);
+
+    for(size_t i = 0; i < grid_shape[0]; ++i) {
+        for(size_t j = 0; j < grid_shape[1]; ++j) {
+            for(size_t k = 0; k < grid_shape[2]; ++k)
+            {
+                result[i][j][k] = 0.5 * ( +(time_step/c)*(time_step/c) * spatial_laplacian[i][j][k]
+                                          + 5 * history[0][i][j][k]
+                                          - 4 * history[1][i][j][k]
+                                          + 1 * history[2][i][j][k]
+                                         );
+            }
+        }
+    }
+
+    return result; // move semantics!
+}
 
 auto Simulation::solveImplicitStep() -> GridData::data_type {
     std::array<size_t,3> grid_shape;

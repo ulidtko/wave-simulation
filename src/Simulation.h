@@ -25,6 +25,7 @@ private:
     std::deque<GridData::data_type> history;
 
 private:
+    auto solveExplicitStep() -> GridData::data_type;
     auto solveImplicitStep() -> GridData::data_type;
 };
 
