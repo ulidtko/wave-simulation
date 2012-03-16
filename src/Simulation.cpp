@@ -37,9 +37,9 @@ void Simulation::reset()
     grid->fill(0.0);
 
     history.clear();
-    history.push_front(*grid);
-    history.push_front(*grid);
-    history.push_front(*grid);
+    history.push_front(grid->data);
+    history.push_front(grid->data);
+    history.push_front(grid->data);
 }
 
 
@@ -98,9 +98,9 @@ void Simulation::advanceOneTick()
             for(size_t k = 0; k < grid_shape[2]; ++k)
             {
                 next_grid[i][j][k] = 0.5 * ( +(time_step/c)*(time_step/c) * spatial_laplacian[i][j][k]
-                                             + 5 * history[0].data[i][j][k]
-                                             - 4 * history[1].data[i][j][k]
-                                             + 1 * history[2].data[i][j][k]
+                                             + 5 * history[0][i][j][k]
+                                             - 4 * history[1][i][j][k]
+                                             + 1 * history[2][i][j][k]
                                             );
             }
         }
@@ -108,7 +108,7 @@ void Simulation::advanceOneTick()
 
     grid->data = next_grid;
 
-    history.push_front(*grid);
+    history.push_front(grid->data);
     history.pop_back();
 
     ++tick_counter;

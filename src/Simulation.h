@@ -21,7 +21,7 @@ private:
     int tick_counter;
     float c; // speed of wave propagation
 
-    std::deque<GridData> history;
+    std::deque<GridData::data_type> history;
 };
 
 #endif // SIMULATION_H
