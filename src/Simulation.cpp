@@ -1,13 +1,10 @@
 #include "Simulation.h"
 
-#include <Eigen/Dense>
-#include <Eigen/UmfPackSupport>
-
-#include <boost/multi_array.hpp>
-
 #include <cstdio>
 #include <cmath>
 #include <array>
+
+#include <boost/multi_array.hpp>
 
 auto static i_all = boost::multi_array_types::index_range(); // "all" index range
 
@@ -29,6 +26,7 @@ Simulation::Simulation(std::shared_ptr<Grid> grid, float time_step, float c)
     , c(c)
 {
     reset();
+    prepareEquationsLU();
 }
 
 
@@ -113,37 +111,12 @@ auto Simulation::solveImplicitStep() -> Grid::data_type {
     std::array<size_t,3> grid_shape;
     std::copy_n(grid->data.shape(), 3, grid_shape.begin());
 
-    double r = pow(c * time_step / grid->grid_step, 2);
-
     int shape0 = grid_shape[0]; // height
     int shape1 = grid_shape[1]; // width
     int N = shape0 * shape1; // total number of nodes in the grid
 
     auto flatten = [shape0](int i, int j) { return i + j * shape0; };
     auto unflatten = [shape0](int k) { return std::make_tuple(k % shape0, k / shape0); };
-
-    // fill the equation system matrix
-    Eigen::SparseMatrix<double> eqs(N, N);
-    for(int i = 0; i < shape0; ++i) {
-        for(int j = 0; j < shape1; ++j) {
-            int eqn = flatten(i, j);
-
-            eqs.insert(flatten(i, j), eqn) = (1 + 2 * r);
-
-            if(i > 0)
-                eqs.insert(flatten(i-1, j), eqn) = (- r / 2);
-
-            if(i + 1 < shape0)
-                eqs.insert(flatten(i+1, j), eqn) = (- r / 2);
-
-            if(j > 0)
-                eqs.insert(flatten(i, j-1), eqn) = (- r / 2);
-
-            if(j + 1 < shape1)
-                eqs.insert(flatten(i, j+1), eqn) = (- r / 2);
-        }
-    }
-    eqs.finalize();
 
     // fill the equation system's vector b
     Eigen::VectorXd b0(N);
@@ -156,16 +129,12 @@ auto Simulation::solveImplicitStep() -> Grid::data_type {
     }
 
     // call the solver
-    Eigen::SparseLU<decltype(eqs), Eigen::UmfPack> eqs_lu(eqs);
     Eigen::VectorXd solution0(N);
     Eigen::VectorXd solution1(N);
-    if(!eqs_lu.succeeded()) {
-        throw std::runtime_error("LU decomposition failed");
-    }
-    if(!eqs_lu.solve(b0, &solution0)) {
+    if(!equations_lu.solve(b0, &solution0)) {
         throw std::runtime_error("Eigen::SparseLU<...>::solve() failed");
     }
-    if(!eqs_lu.solve(b1, &solution1)) {
+    if(!equations_lu.solve(b1, &solution1)) {
         throw std::runtime_error("Eigen::SparseLU<...>::solve() failed");
     }
 
@@ -179,4 +148,45 @@ auto Simulation::solveImplicitStep() -> Grid::data_type {
     }
 
     return result; // move semantics!
+}
+
+void Simulation::prepareEquationsLU() {
+    std::array<size_t,3> grid_shape;
+    std::copy_n(grid->data.shape(), 3, grid_shape.begin());
+
+    double r = pow(c * time_step / grid->grid_step, 2);
+
+    size_t shape0 = grid_shape[0]; // height
+    size_t shape1 = grid_shape[1]; // width
+    unsigned N = shape0 * shape1; // total number of nodes in the grid
+
+    auto flatten = [shape0](int i, int j) { return i + j * shape0; };
+    auto unflatten = [shape0](int k) { return std::make_tuple(k % shape0, k / shape0); };
+
+    equations.resize(N, N);
+    for(size_t i = 0; i < grid_shape[0]; ++i) {
+        for(size_t j = 0; j < grid_shape[1]; ++j) {
+            int eqn = flatten(i, j);
+
+            equations.insert(flatten(i, j), eqn) = (1 + 2 * r);
+
+            if(i > 0)
+                equations.insert(flatten(i-1, j), eqn) = (- r / 2);
+
+            if(i + 1 < shape0)
+                equations.insert(flatten(i+1, j), eqn) = (- r / 2);
+
+            if(j > 0)
+                equations.insert(flatten(i, j-1), eqn) = (- r / 2);
+
+            if(j + 1 < shape1)
+                equations.insert(flatten(i, j+1), eqn) = (- r / 2);
+        }
+    }
+    equations.finalize();
+
+    equations_lu = {equations};
+    if(!equations_lu.succeeded()) {
+        throw std::runtime_error("LU decomposition failed");
+    }
 }

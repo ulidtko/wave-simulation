@@ -4,7 +4,11 @@
 #include <deque>
 #include <memory>
 
+#include <Eigen/Sparse>
+#include <Eigen/UmfPackSupport>
+
 #include "GridData.h"
+
 
 class Simulation
 {
@@ -23,6 +27,12 @@ private:
     float c; // speed of wave propagation
 
     std::deque<Grid::data_type> history;
+
+private:
+    Eigen::SparseMatrix<double> equations;
+    Eigen::SparseLU<decltype(equations), Eigen::UmfPack> equations_lu;
+
+    void prepareEquationsLU();
 
 private:
     auto solveExplicitStep() -> Grid::data_type;
