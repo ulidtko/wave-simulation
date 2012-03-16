@@ -21,7 +21,9 @@ public:
 private:
     float width;
     float height;
-    float grid_step;
+
+public:
+    const float grid_step;
 };
 
 #endif // GRIDDATA_H

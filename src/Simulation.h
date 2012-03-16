@@ -10,7 +10,8 @@ class Simulation
 {
 public:
     explicit Simulation(std::shared_ptr<GridData> grid,
-                        float time_step = 0.01, float c = 10.0);
+                        float time_step = 0.01,
+                        float c = 10.0);
 
     void reset();
     void advanceOneTick();
@@ -22,6 +23,9 @@ private:
     float c; // speed of wave propagation
 
     std::deque<GridData::data_type> history;
+
+private:
+    auto solveImplicitStep() -> GridData::data_type;
 };
 
 #endif // SIMULATION_H
