@@ -6,5 +6,6 @@ find_package(Qt4 REQUIRED QtCore QtGui QtOpenGL)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(Eigen3 3.0.0 REQUIRED)
+find_package(Umfpack)
 
 add_subdirectory(src)
