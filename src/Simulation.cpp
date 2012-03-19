@@ -185,7 +185,7 @@ void Simulation::prepareEquationsLU() {
     }
     equations.finalize();
 
-    equations_lu = {equations};
+    equations_lu.compute(equations);
     if(!equations_lu.succeeded()) {
         throw std::runtime_error("LU decomposition failed");
     }
