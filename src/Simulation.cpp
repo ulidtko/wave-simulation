@@ -123,8 +123,8 @@ auto Simulation::solveImplicitStep() -> Grid::data_type {
     Eigen::VectorXd b1(N);
     for(int i = 0; i < shape0; ++i) {
         for(int j = 0; j < shape1; ++j) {
-            b0[flatten(i,j)] = (5 * history[0][i][j][0] - 4 * history[1][i][j][0] + history[2][i][j][0]) / 2.0;
-            b1[flatten(i,j)] = (5 * history[0][i][j][1] - 4 * history[1][i][j][1] + history[2][i][j][1]) / 2.0;
+            b0[flatten(i,j)] = 5 * history[0][i][j][0] - 4 * history[1][i][j][0] + history[2][i][j][0];
+            b1[flatten(i,j)] = 5 * history[0][i][j][1] - 4 * history[1][i][j][1] + history[2][i][j][1];
         }
     }
 
@@ -168,19 +168,19 @@ void Simulation::prepareEquationsLU() {
         for(size_t j = 0; j < grid_shape[1]; ++j) {
             int eqn = flatten(i, j);
 
-            equations.insert(flatten(i, j), eqn) = (1 + 2 * r);
+            equations.insert(flatten(i, j), eqn) = (2 + 4 * r);
 
             if(i > 0)
-                equations.insert(flatten(i-1, j), eqn) = (- r / 2);
+                equations.insert(flatten(i-1, j), eqn) = -r;
 
             if(i + 1 < shape0)
-                equations.insert(flatten(i+1, j), eqn) = (- r / 2);
+                equations.insert(flatten(i+1, j), eqn) = -r;
 
             if(j > 0)
-                equations.insert(flatten(i, j-1), eqn) = (- r / 2);
+                equations.insert(flatten(i, j-1), eqn) = -r;
 
             if(j + 1 < shape1)
-                equations.insert(flatten(i, j+1), eqn) = (- r / 2);
+                equations.insert(flatten(i, j+1), eqn) = -r;
         }
     }
     equations.finalize();
