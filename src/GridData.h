@@ -3,27 +3,34 @@
 
 #include <boost/multi_array.hpp>
 #include <tuple>
+#include <array>
 
 using std::tuple;
 
 class Grid
 {
 public:
-    typedef boost::multi_array<double, 3> data_type; // dimensions: x, y, displacement vector component (0 or 1)
+    const float width;
+    const float height;
+    const float grid_step;
+
+    typedef boost::multi_array<double, 3> data_type;
     data_type data;
 
     Grid(float width, float height, float grid_step);
+
     void fill(double value);
 
     tuple<double,double> getNodeOrigin(int i, int j) const;
     tuple<double,double> getNodePosition(int i, int j) const;
 
 private:
-    float width;
-    float height;
+    std::array<size_t, 3> shape;
 
-public:
-    const float grid_step;
+    int getEquationNumber(int i, int j) { return i + j * shape[0]; }
+    tuple<int,int> getEquationNode(int k) { return std::make_tuple(k % shape[0], k / shape[0]); }
+
+    friend class Simulation; // yeah, i suck at OO design :(
 };
 
 #endif // GRIDDATA_H

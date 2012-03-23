@@ -12,6 +12,7 @@ Grid::Grid(float width, float height, float grid_step)
 
     data_type::extent_gen extents;
     data.resize(extents[width_cells][height_cells][2]);
+    std::copy_n(data.shape(), 3, shape.begin());
 }
 
 
