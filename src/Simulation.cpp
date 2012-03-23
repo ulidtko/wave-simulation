@@ -56,13 +56,6 @@ void Simulation::advanceOneTick()
     printf("\n");
 #endif
 
-#if 0
-    using boost::indices;
-    printf("spatial laplacian, x:\n");
-    printFloatMatrix(spatial_laplacian[ indices [i_all] [i_all] [0] ]);
-    printf("\n");
-#endif
-
     history.push_front(grid->data);
     history.pop_back();
 
