@@ -40,6 +40,16 @@ void Simulation::reset()
     history.push_front(grid->data);
     history.push_front(grid->data);
     history.push_front(grid->data);
+
+    auto initial_edge_pulse = [this](Grid::data_type& grid) {
+        if(tick_counter == 0) {
+            for(size_t i = 0; i < grid.shape()[1]; ++i) {
+                grid[0][i][0] = 0.2;
+            }
+        }
+    };
+
+    filters.push_back(initial_edge_pulse);
 }
 
 
@@ -47,7 +57,11 @@ void Simulation::advanceOneTick()
 {
     auto next_grid = solveImplicitStep();
 
-    grid->data = next_grid;
+    for(auto& filter: filters) {
+        filter(next_grid);
+    }
+
+    grid->data = std::move(next_grid); // this should happen sort of atomically
 
 #if 0
     using boost::indices;

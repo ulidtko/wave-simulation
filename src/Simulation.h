@@ -20,6 +20,9 @@ public:
     void reset();
     void advanceOneTick();
 
+    typedef std::function<void(Grid::data_type&)> Filter;
+    std::vector<Filter> filters;
+
 private:
     std::shared_ptr<Grid> grid;
     float time_step;
