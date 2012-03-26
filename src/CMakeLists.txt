@@ -14,6 +14,7 @@ add_library(core STATIC
     Simulation.cpp
     GridData.cpp
     rendering/MeshRenderer.cpp
+    rendering/ImageRenderer.cpp
 )
 
 target_link_libraries(core

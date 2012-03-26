@@ -4,9 +4,15 @@
 
 #include "GridData.h"
 #include "rendering/MeshRenderer.h"
+#include "rendering/ImageRenderer.h"
 
 void MyGLWidget::initializeGL() {
+    glEnable(GL_TEXTURE_2D);
     glClearColor(0.2, 0.2, 0.2, 0.0);
+
+    auto img = QImage("/home/max/code/wave-simulation/res/android.jpg");
+    texName = bindTexture(img, GL_TEXTURE_2D, GL_RGB,
+                          QGLContext::InvertedYBindOption | QGLContext::LinearFilteringBindOption);
 }
 
 void MyGLWidget::resizeGL(int w, int h) {
@@ -23,5 +29,8 @@ void MyGLWidget::resizeGL(int w, int h) {
 void MyGLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    MeshRenderer::render(*grid);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glBindTexture(GL_TEXTURE_2D, texName);
+    ImageRenderer::render(*grid);
+    //MeshRenderer::render(*grid);
 }

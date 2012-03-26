@@ -11,7 +11,8 @@ class MyGLWidget : public QGLWidget
     Q_OBJECT
 public:
     explicit MyGLWidget(QWidget *parent = 0)
-      : QGLWidget(parent) {}
+      : QGLWidget(parent)
+    {}
 
     void setGrid(std::shared_ptr<Grid> arg) { grid = arg; }
 
@@ -21,6 +22,8 @@ protected:
     void paintGL();
 
 private:
+    GLuint texName;
+
     std::shared_ptr<Grid> grid;
 };
 

@@ -18,4 +18,5 @@ add_executable(qtgui
 target_link_libraries(qtgui
     core
     ${QT_LIBRARIES}
+    ${OPENGL_LIBRARIES}
 )
