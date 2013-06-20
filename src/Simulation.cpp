@@ -44,12 +44,36 @@ void Simulation::reset()
     auto initial_edge_pulse = [this](Grid::data_type& grid) {
         if(tick_counter == 0) {
             for(size_t i = 0; i < grid.shape()[1]; ++i) {
-                grid[0][i][0] = 0.2;
+                grid[1][i][0] = 0.2 * c * c;
+            }
+        }
+    };
+
+    auto edge_fixer = [](Grid::data_type& grid) {
+        size_t m = grid.shape()[0];
+        for(size_t i = 0; i < grid.shape()[1]; ++i) {
+            grid[m-1][i][0] = 0.0;
+            grid[0][i][0] = 0.0;
+//            grid[m-1][i][1] = 0.0;
+        }
+    };
+
+    struct dissipation {
+        double k;
+        explicit dissipation(double k) : k(k) {}
+        void operator() (Grid::data_type& grid) {
+            for(auto row: grid) {
+                for(auto elem: row) {
+                    elem[0] *= k;
+                    elem[1] *= k;
+                }
             }
         }
     };
 
     filters.push_back(initial_edge_pulse);
+    filters.push_back(edge_fixer);
+//    filters.push_back(dissipation(0.99));
 }
 
 

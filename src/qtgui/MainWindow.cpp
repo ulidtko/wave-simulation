@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , grid(new Grid(12.0, 8.0, 0.2))
-    , simulation(new Simulation(grid, 1.0 / kMaxTps, 1.0))
+    , simulation(new Simulation(grid, 1.0 / kMaxTps, 3.0))
 {
     ui->setupUi(this);
     ui->centralwidget->setGrid(grid);
