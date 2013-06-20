@@ -151,13 +151,10 @@ auto Simulation::solveImplicitStep() -> Grid::data_type {
     }
 
     // perform the decomposed matrix multiplication
-    Eigen::VectorXd solution0(N);
-    Eigen::VectorXd solution1(N);
-    if(!equations_lu.solve(b0, &solution0)) {
-        throw std::runtime_error("Eigen::SparseLU<...>::solve() failed");
-    }
-    if(!equations_lu.solve(b1, &solution1)) {
-        throw std::runtime_error("Eigen::SparseLU<...>::solve() failed");
+    Eigen::VectorXd solution0 = equations_lu.solve(b0);
+    Eigen::VectorXd solution1 = equations_lu.solve(b1);
+    if(equations_lu.info() != Eigen::Success) {
+        throw std::runtime_error("decomposed matrix multiplication failed");
     }
 
     // prepare result
@@ -202,7 +199,7 @@ void Simulation::prepareEquationsLU() {
     equations.finalize();
 
     equations_lu.compute(equations);
-    if(!equations_lu.succeeded()) {
+    if(equations_lu.info() != Eigen::Success) {
         throw std::runtime_error("LU decomposition failed");
     }
 }

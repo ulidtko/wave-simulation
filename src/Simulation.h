@@ -33,7 +33,7 @@ private:
 
 private:
     Eigen::SparseMatrix<double> equations;
-    Eigen::SparseLU<decltype(equations), Eigen::UmfPack> equations_lu;
+    Eigen::UmfPackLU<decltype(equations)> equations_lu;
 
     void prepareEquationsLU();
 

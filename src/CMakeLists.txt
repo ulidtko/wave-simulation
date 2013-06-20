@@ -8,8 +8,6 @@ include_directories(.
 
 set(CMAKE_CXX_FLAGS "-std=c++0x -Wall")
 
-add_definitions(-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET)
-
 add_library(core STATIC
     Simulation.cpp
     GridData.cpp
