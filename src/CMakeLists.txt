@@ -2,7 +2,6 @@ include_directories(.
     ${Boost_INCLUDE_DIRS}
     ${QT_INCLUDES}
     ${EIGEN3_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}/unsupported
     ${UMFPACK_INCLUDES}
 )
 
