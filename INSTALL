@@ -10,6 +10,5 @@ partially complying compiler to build it; GCC 4.6.1 worked just fine for me.
 === Build ===
 Standard CMake build:
 $ mkdir build
-$ cd build
-$ cmake ..
-$ make
+$ ( cd build && cmake .. )
+$ make -sC build
