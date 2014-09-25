@@ -18,10 +18,9 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    std::shared_ptr<Ui::MainWindow> ui;
 
     std::shared_ptr<Grid> grid;
     std::shared_ptr<Simulation> simulation;

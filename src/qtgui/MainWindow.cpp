@@ -21,11 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     timer.start();
 }
 
-MainWindow::~MainWindow() {
-    delete ui;
-}
-
-
 void MainWindow::onTimer() {
     simulation->advanceOneTick();
     ui->centralwidget->repaint();
