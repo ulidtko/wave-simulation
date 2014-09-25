@@ -1,0 +1,283 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\begin_modules
+logicalmkup
+fixltx2e
+theorems-starred
+\end_modules
+\maintain_unincluded_children false
+\language russian
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman Liberation Serif
+\font_sans DejaVu Sans
+\font_typewriter DejaVu Sans Mono
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 80
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "basicstyle={\ttfamily},extendedchars=false"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section*
+Model
+\end_layout
+
+\begin_layout Standard
+Let us build a model of elastic 2D grid.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $U(x,y,t)\rightarrow\mathbb{R}^{2}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $U(x,y,t)=\left(u(x,y,t),\, v(x,y,t)\right);$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $U$
+\end_inset
+
+ is vector function which represents displacement field, consisting at each
+ spacetime point of horizontal and vertical displacement.
+\end_layout
+
+\begin_layout Section*
+Wave equation
+\end_layout
+
+\begin_layout Standard
+The well-known wave equation for our displacement function:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+U_{tt}=c^{2}\left(U_{xx}+U_{yy}\right);
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $c$
+\end_inset
+
+ is the wave propagation speed which parametrizes medium properties.
+\end_layout
+
+\begin_layout Section*
+Discretization and integration
+\end_layout
+
+\begin_layout Standard
+We will discretize out model over even space grid with step 
+\begin_inset Formula $h$
+\end_inset
+
+ and even time intervals with step 
+\begin_inset Formula $d$
+\end_inset
+
+.
+ Thus we get values 
+\begin_inset Formula $U_{i,j}^{n}=\left(u_{i,j}^{n},v_{i,j}^{n}\right)$
+\end_inset
+
+, indexed by space indexes 
+\begin_inset Formula $i$
+\end_inset
+
+, 
+\begin_inset Formula $j$
+\end_inset
+
+ and timestep index 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Finite difference approximation for spatial laplacians, using the well-known
+ five-point stencil:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+{\displaystyle \Delta U_{i,j}^{n}\approx\frac{1}{h^{2}}\left(U_{i+1,j}^{n}+U_{i-1,j}^{n}+U_{i,j+1}^{n}+U_{i,j-1}^{n}-4\cdot U_{i,j}^{n}\right)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Backward finite difference approximation for second time derivative:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\left(U_{tt}\right)_{i,j}^{n}\approx\frac{1}{d^{2}}\left(2U_{i,j}^{n}-5U_{i,j}^{n-1}+4U_{i,j}^{n-2}-U_{i,j}^{n-3}\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Explicit scheme:
+\begin_inset Formula 
+\[
+\left(U_{tt}\right)_{i,j}^{n+1}=c^{2}\cdot\Delta U_{i,j}^{n}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Substituting the approximations into it we get explicit solution:
+\begin_inset Formula 
+\[
+\frac{2U_{i,j}^{n+1}-5U_{i,j}^{n}+4U_{i,j}^{n-1}-U_{i,j}^{n-2}}{d^{2}}=c^{2}\cdot\Delta U_{i,j}^{n}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+U_{i,j}^{n+1}=\frac{1}{2}\left(c^{2}d^{2}\cdot\Delta U_{i,j}^{n}+5U_{i,j}^{n}-4U_{i,j}^{n-1}+U_{i,j}^{n-2}\right),
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+U_{i,j}^{n+1}=\frac{1}{2}\left(c^{2}\cdot\frac{d^{2}}{h^{2}}\left(U_{i+1,j}^{n}+U_{i-1,j}^{n}+U_{i,j+1}^{n}+U_{i,j-1}^{n}-4\cdot U_{i,j}^{n}\right)+5U_{i,j}^{n}-4U_{i,j}^{n-1}+U_{i,j}^{n-2}\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Stability considerations
+\end_layout
+
+\begin_layout Standard
+Explicit solution blows up.
+ It's unstable as long as time and grid steps are not small enough.
+\end_layout
+
+\begin_layout Section
+Implicit solution
+\begin_inset Formula 
+\[
+\left(U_{tt}\right)_{i,j}^{n+1}=c^{2}\cdot\Delta U_{i,j}^{n+1};
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{2U_{i,j}^{n+1}-5U_{i,j}^{n}+4U_{i,j}^{n-1}-U_{i,j}^{n-2}}{d^{2}}=c^{2}\cdot\Delta U_{i,j}^{n+1};
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+2U_{i,j}^{n+1}-5U_{i,j}^{n}+4U_{i,j}^{n-1}-U_{i,j}^{n-2}=c^{2}\cdot\frac{d^{2}}{h^{2}}\left(U_{i+1,j}^{n+1}+U_{i-1,j}^{n+1}+U_{i,j+1}^{n+1}+U_{i,j-1}^{n+1}-4\cdot U_{i,j}^{n+1}\right);
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+abbreviate 
+\begin_inset Formula $r=c^{2}\cdot\frac{d^{2}}{h^{2}}$
+\end_inset
+
+;
+\begin_inset Formula 
+\[
+\left(2+4r\right)U_{i,j}^{n+1}-r\left(U_{i+1,j}^{n+1}+U_{i-1,j}^{n+1}+U_{i,j+1}^{n+1}+U_{i,j-1}^{n+1}\right)=5U_{i,j}^{n}-4U_{i,j}^{n-1}+U_{i,j}^{n-2}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
