@@ -10,7 +10,7 @@ void MyGLWidget::initializeGL() {
     glEnable(GL_TEXTURE_2D);
     glClearColor(0.2, 0.2, 0.2, 0.0);
 
-    auto img = QImage("/home/max/code/wave-simulation/res/android.jpg");
+    auto img = QImage(":/android.jpg");
     texName = bindTexture(img, GL_TEXTURE_2D, GL_RGB,
                           QGLContext::InvertedYBindOption | QGLContext::LinearFilteringBindOption);
 }
