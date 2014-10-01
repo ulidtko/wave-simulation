@@ -5,11 +5,12 @@ include_directories(.
     ${UMFPACK_INCLUDES}
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++0x -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
 
 add_library(core STATIC
     Simulation.cpp
     GridData.cpp
+    Perturbator.cpp
     rendering/MeshRenderer.cpp
     rendering/ImageRenderer.cpp
 )

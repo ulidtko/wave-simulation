@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->centralwidget->setGrid(grid);
 
     simulation->reset();
+    simulation->filters.emplace_back(std::ref(
+        ui->centralwidget->getInteractivityFilter()
+    ));
 
     timer.setInterval(1000 / kMaxTps);
     this->connect(&timer, SIGNAL(timeout()), SLOT(onTimer()));

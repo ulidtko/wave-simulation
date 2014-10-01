@@ -4,6 +4,8 @@
 #include <QGLWidget>
 #include <memory>
 
+#include "Perturbator.h"
+
 class Grid;
 
 class MyGLWidget : public QGLWidget
@@ -21,10 +23,18 @@ protected:
     void resizeGL(int w, int h);
     void paintGL();
 
+protected:
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+public:
+    auto getInteractivityFilter() -> Perturbator& { return perturber; }
+
 private:
     GLuint texName;
 
     std::shared_ptr<Grid> grid;
+    Perturbator perturber;
 };
 
 #endif // MYGLWIDGET_H

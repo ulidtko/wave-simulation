@@ -23,6 +23,7 @@ public:
 
     tuple<double,double> getNodeOrigin(int i, int j) const;
     tuple<double,double> getNodePosition(int i, int j) const;
+    tuple<int,int> getNearestNode(tuple <double,double> pos) const;
 
 private:
     std::array<size_t, 3> shape;
