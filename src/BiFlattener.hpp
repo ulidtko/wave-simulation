@@ -2,6 +2,8 @@
 #define BIFLATTENER_HPP
 
 #include <tuple>
+#include <type_traits>
+#include <boost/static_assert.hpp>
 #include <boost/type_traits/integral_promotion.hpp>
 
 
@@ -14,6 +16,9 @@
 template <typename T>
 struct BiFlattener
 {
+    BOOST_STATIC_ASSERT_MSG(std::is_integral<T>::value,
+                            "usable only with integral types");
+
     typedef T narrow_type;
     typedef typename boost::integral_promotion<T>::type wider_type;
 
