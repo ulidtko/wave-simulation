@@ -7,7 +7,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "Simulation.h"
+#include "simulation/Simulation.h"
 #include "rendering/MeshRenderer.h"
 #include "rendering/ImageRenderer.h"
 

@@ -8,10 +8,10 @@ include_directories(.
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall")
 
 add_library(core STATIC
-    Simulation.cpp
-    GridData.cpp
-    Perturbator.cpp
-    InteractionController.cpp
+    simulation/Simulation.cpp
+    simulation/GridData.cpp
+    simulation/Perturbator.cpp
+    simulation/InteractionController.cpp
     rendering/MeshRenderer.cpp
     rendering/ImageRenderer.cpp
 )

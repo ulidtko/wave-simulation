@@ -5,8 +5,8 @@
 #include <QTimer>
 #include <memory>
 
-#include "GridData.h"
-#include "Simulation.h"
+#include "simulation/GridData.h"
+#include "simulation/Simulation.h"
 
 namespace Ui {
     class MainWindow;

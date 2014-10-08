@@ -3,7 +3,7 @@
 #include <array>
 #include <GL/gl.h>
 
-#include "GridData.h"
+#include "simulation/GridData.h"
 
 using std::tie;
 

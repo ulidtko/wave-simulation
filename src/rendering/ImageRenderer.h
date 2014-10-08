@@ -1,7 +1,7 @@
 #ifndef IMAGERENDERER_H
 #define IMAGERENDERER_H
 
-#include "GridData.h"
+#include "simulation/GridData.h"
 
 class ImageRenderer
 {
