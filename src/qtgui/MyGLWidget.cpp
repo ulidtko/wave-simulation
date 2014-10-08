@@ -7,7 +7,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "GridData.h"
+#include "Simulation.h"
 #include "rendering/MeshRenderer.h"
 #include "rendering/ImageRenderer.h"
 
@@ -64,10 +64,7 @@ tuple<float,float> window2scene(const QPoint& winCoord) {
 }
 
 void MyGLWidget::mousePressEvent(QMouseEvent* e) {
-    using std::get;
-    auto gridpos = grid->getNearestNode(window2scene(e->pos()));
-    auto pulse = Gesture::RadialPulse{get<0>(gridpos), get<1>(gridpos), 3.0, 0.4};
-    perturber.enqueue(pulse);
+    simulation->interactor.action1(window2scene(e->pos()));
 }
 
 void MyGLWidget::mouseMoveEvent(QMouseEvent* e) {

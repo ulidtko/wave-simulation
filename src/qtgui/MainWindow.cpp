@@ -13,10 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->centralwidget->setGrid(grid);
+    ui->centralwidget->setSimulation(simulation);
 
     simulation->reset();
     simulation->filters.emplace_back(std::ref(
-        ui->centralwidget->getInteractivityFilter()
+        simulation->interactor.getInteractivityFilter()
     ));
 
     timer.setInterval(1000 / kMaxTps);

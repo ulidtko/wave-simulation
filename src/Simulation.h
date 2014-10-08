@@ -8,6 +8,7 @@
 #include <Eigen/UmfPackSupport>
 
 #include "GridData.h"
+#include "InteractionController.h"
 
 
 class Simulation
@@ -30,6 +31,10 @@ private:
     float c; // speed of wave propagation
 
     std::deque<Grid::data_type> history;
+
+public:
+    InteractionController interactor;
+    friend class InteractionController;
 
 private:
     Eigen::SparseMatrix<double> equations;

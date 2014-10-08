@@ -26,6 +26,7 @@ Simulation::Simulation(std::shared_ptr<Grid> grid, float time_step, float c)
     : grid(grid)
     , time_step(time_step)
     , c(c)
+    , interactor(*this)
 {
     reset();
     prepareEquationsLU();

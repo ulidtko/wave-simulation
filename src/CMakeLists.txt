@@ -11,6 +11,7 @@ add_library(core STATIC
     Simulation.cpp
     GridData.cpp
     Perturbator.cpp
+    InteractionController.cpp
     rendering/MeshRenderer.cpp
     rendering/ImageRenderer.cpp
 )

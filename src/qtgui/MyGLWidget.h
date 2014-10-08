@@ -4,9 +4,8 @@
 #include <QGLWidget>
 #include <memory>
 
-#include "Perturbator.h"
-
 class Grid;
+class Simulation;
 
 class MyGLWidget : public QGLWidget
 {
@@ -17,6 +16,7 @@ public:
     {}
 
     void setGrid(std::shared_ptr<Grid> arg) { grid = arg; }
+    void setSimulation(std::shared_ptr<Simulation> arg) { simulation = arg; }
 
 protected:
     void initializeGL();
@@ -27,14 +27,12 @@ protected:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
-public:
-    auto getInteractivityFilter() -> Perturbator& { return perturber; }
 
 private:
     GLuint texName;
 
     std::shared_ptr<Grid> grid;
-    Perturbator perturber;
+    std::shared_ptr<Simulation> simulation;
 };
 
 #endif // MYGLWIDGET_H
