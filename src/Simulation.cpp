@@ -6,6 +6,8 @@
 
 #include <boost/multi_array.hpp>
 
+#include "BiFlattener.hpp"
+
 auto static i_all = boost::multi_array_types::index_range(); // "all" index range
 
 
@@ -139,12 +141,14 @@ auto Simulation::solveExplicitStep() -> Grid::data_type {
 auto Simulation::solveImplicitStep() -> Grid::data_type {
     int N = grid->shape[0] * grid->shape[1]; // total number of nodes in the grid
 
+    BiFlattener<size_t> index_helper {grid->shape[0]};
+
     // fill the equation system's vector b
     Eigen::VectorXd b0(N);
     Eigen::VectorXd b1(N);
     for(size_t i = 0; i < grid->shape[0]; ++i) {
         for(size_t j = 0; j < grid->shape[1]; ++j) {
-            int eqn = grid->getEquationNumber(i, j);
+            int eqn = index_helper.flatten(i, j);
             b0[eqn] = 5 * history[0][i][j][0] - 4 * history[1][i][j][0] + history[2][i][j][0];
             b1[eqn] = 5 * history[0][i][j][1] - 4 * history[1][i][j][1] + history[2][i][j][1];
         }
@@ -161,7 +165,7 @@ auto Simulation::solveImplicitStep() -> Grid::data_type {
     Grid::data_type result(grid->shape);
     for(int eqn = 0; eqn < N; ++eqn) {
         int i, j;
-        std::tie(i, j) = grid->getEquationNode(eqn);
+        std::tie(i, j) = index_helper.unflatten(eqn);
         result[i][j][0] = solution0[eqn];
         result[i][j][1] = solution1[eqn];
     }
@@ -174,7 +178,8 @@ void Simulation::prepareEquationsLU() {
 
     unsigned N = grid->shape[0] * grid->shape[1]; // total number of nodes in the grid
 
-    auto flatten = [&](int i, int j) { return grid->getEquationNumber(i, j); };
+    BiFlattener<size_t> index_helper {grid->shape[0]};
+    auto flatten = [&](size_t i, size_t j) { return index_helper.flatten(i, j); };
 
     equations.resize(N, N);
     for(size_t i = 0; i < grid->shape[0]; ++i) {

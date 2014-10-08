@@ -13,6 +13,7 @@ public:
     const float width;
     const float height;
     const float grid_step;
+    const std::array<size_t, 3> shape;
 
     typedef boost::multi_array<double, 3> data_type;
     data_type data;
@@ -26,12 +27,8 @@ public:
     tuple<int,int> getNearestNode(tuple <double,double> pos) const;
 
 private:
-    std::array<size_t, 3> shape;
-
-    int getEquationNumber(int i, int j) { return i + j * shape[0]; }
-    tuple<int,int> getEquationNode(int k) { return std::make_tuple(k % shape[0], k / shape[0]); }
-
-    friend class Simulation; // yeah, i suck at OO design :(
+    auto initShape() -> decltype(shape);
 };
+
 
 #endif // GRIDDATA_H

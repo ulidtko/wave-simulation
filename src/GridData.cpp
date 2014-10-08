@@ -9,13 +9,17 @@ Grid::Grid(float width, float height, float grid_step)
     : width(width)
     , height(height)
     , grid_step(grid_step)
-{
-    int width_cells = width / grid_step;
-    int height_cells = height / grid_step;
+    , shape(this->initShape())
+    , data(shape)
+{}
 
-    data_type::extent_gen extents;
-    data.resize(extents[width_cells][height_cells][2]);
-    std::copy_n(data.shape(), 3, shape.begin());
+decltype(Grid::shape)
+Grid::initShape()
+{
+    uint width_cells = width / grid_step;
+    uint height_cells = height / grid_step;
+
+    return {width_cells, height_cells, 2};
 }
 
 
