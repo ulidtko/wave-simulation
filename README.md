@@ -1,9 +1,9 @@
 wave-simulation
 ===============
 
-*A C++11/CMake/Boost/Qt/OpenGL excersize.*
+*A C++11/CMake/Boost/Qt/OpenGL exercise.*
 
-This code started in Feb 2012 as an employment excersize. Local Samsung R&D center[¹] gave me an assignment, which was roughly formulated as:
+This code started in Feb 2012 as an employment exercise. Local Samsung R&D center[¹] gave me an assignment, which was roughly formulated as:
 > Make a wave going over a picture. Bonus points for reflections, radial waves, etc.
 
 [¹]: http://www.samsung.com/ua/aboutsamsung/careers/samsungukraineresearchcenter/SamsungUkraineResearchCenter.html
