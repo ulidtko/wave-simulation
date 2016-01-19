@@ -5,8 +5,12 @@
 #include <QTimer>
 #include <memory>
 
+#ifndef Q_MOC_RUN // workaround for QTBUG-22829
+
 #include "simulation/GridData.h"
 #include "simulation/Simulation.h"
+
+#endif // Q_MOC_RUN
 
 namespace Ui {
     class MainWindow;
