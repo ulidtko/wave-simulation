@@ -10,6 +10,8 @@ This code started in Feb 2012 as an employment exercise. Local Samsung R&D cente
 
 I approached the problem by continuously solving the two-dimensional [wave equation] for a 2D displacement vector field using the [finite difference method]. Then there was a visualization using [QGLWidget].
 
+The result looks like this: ![](demo.gif)
+
 [wave equation]: https://en.wikipedia.org/wiki/Wave_equation
 [finite difference method]: http://en.wikipedia.org/wiki/Finite_difference_method
 [QGLWidget]: http://qt-project.org/doc/qt-4.8/qglwidget.html
